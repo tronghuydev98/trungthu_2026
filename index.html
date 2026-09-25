@@ -191,7 +191,7 @@
       width: 100vw;
       height: 100vh;
       background-image: url("c7ecbf38-6dd2-4132-bd84-1f1e4de6dbd4.png");
-      background-size: cover;
+      background-size: 100% 100%;
       background-position: center center;
       background-repeat: no-repeat;
       overflow: hidden;
@@ -569,7 +569,25 @@
         };
 
         wrapper.addEventListener('click', triggerClick);
-        wrapper.addEventListener('touchstart', triggerClick, { passive: true });
+        // Mobile: touchend is handled by the click event to avoid opening twice.
+        // Prevent the browser's synthetic click after touch from firing a second time.
+        let touchHandled = false;
+        wrapper.addEventListener('touchstart', (e) => {
+          touchHandled = true;
+        }, { passive: true });
+        wrapper.addEventListener('touchend', (e) => {
+          if (touchHandled) {
+            e.preventDefault();
+            triggerClick(e);
+            setTimeout(() => { touchHandled = false; }, 350);
+          }
+        }, { passive: false });
+        wrapper.addEventListener('click', (e) => {
+          if (touchHandled) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+          }
+        }, true);
 
         lanternsContainer.appendChild(wrapper);
       }
