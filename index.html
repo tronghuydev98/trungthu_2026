@@ -284,28 +284,112 @@
       100% { transform: translateY(-240px) translateX(-30px); opacity: 0.2; }
     }
 
-    .instruction-banner {
-      position: absolute;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(15, 7, 25, 0.82);
-      border: 1px solid #ffd700;
-      padding: 10px 24px;
-      border-radius: 30px;
-      font-size: 14px;
-      color: #fff2a8;
-      box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
-      z-index: 20;
-      backdrop-filter: blur(8px);
-      pointer-events: none;
-      animation: bounce 2s infinite;
-    }
+    /* =========================================================
+   DÒNG HƯỚNG DẪN - ĐƯA LÊN PHÍA TRÊN
+   ========================================================= */
 
-    @keyframes bounce {
-      0%, 100% { transform: translate(-50%, 0); }
-      50% { transform: translate(-50%, -8px); }
-    }
+.instruction-banner {
+  position: absolute;
+
+  /* Đưa dòng hướng dẫn lên trên */
+  top: 20px;
+  bottom: auto;
+
+  /* Căn giữa màn hình */
+  left: 50%;
+  transform: translateX(-50%);
+
+  /* Giao diện */
+  background: rgba(15, 7, 25, 0.82);
+  border: 1px solid #ffd700;
+  padding: 10px 24px;
+  border-radius: 30px;
+
+  /* Chữ */
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff2a8;
+  text-align: center;
+  white-space: nowrap;
+
+  /* Hiệu ứng */
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+  backdrop-filter: blur(8px);
+
+  /* Luôn nằm trên lồng đèn */
+  z-index: 20;
+
+  /* Không cản thao tác chạm vào lồng đèn */
+  pointer-events: none;
+
+  /* Hiệu ứng nhấp nhô nhẹ */
+  animation: bounce 2s infinite;
+}
+
+
+/* =========================================================
+   HIỆU ỨNG NHẤP NHÔ
+   ========================================================= */
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translate(-50%, 0);
+  }
+
+  50% {
+    transform: translate(-50%, -8px);
+  }
+}
+/* =========================================================
+   TỐI ƯU CHO ĐIỆN THOẠI
+   ========================================================= */
+
+@media (max-width: 600px) {
+  .instruction-banner {
+    top: 15px;
+    bottom: auto;
+
+    left: 50%;
+    transform: translateX(-50%);
+
+    /* Không chiếm quá nhiều chiều ngang */
+    width: 85%;
+    max-width: 360px;
+
+    /* Kích thước nhỏ hơn trên điện thoại */
+    font-size: 12px;
+    line-height: 1.4;
+
+    padding: 8px 16px;
+
+    /* Cho phép xuống dòng nếu màn hình quá nhỏ */
+    white-space: normal;
+
+    text-align: center;
+
+    border-radius: 25px;
+
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.35);
+  }
+
+}
+/* =========================================================
+   ĐIỆN THOẠI RẤT NHỎ
+   ========================================================= */
+
+@media (max-width: 380px) {
+
+  .instruction-banner {
+    top: 10px;
+
+    width: 90%;
+
+    font-size: 11px;
+
+    padding: 7px 12px;
+  }
+
+}
 
     /* 4. MODAL POPUP FOR LETTERS & PHOTOS */
     .modal-overlay {
