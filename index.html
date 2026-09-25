@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đêm Trung Thu - Đêm Rằm Ấm Áp</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      user-select: none;
+    }
+
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Montserrat', sans-serif;
+      background-color: #0b0712;
+      color: #fff;
+    }
+
+    /* 1. DOOR ENTRANCE */
+    .door-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 999;
+      display: flex;
+      background-color: #580a14;
+      overflow: hidden;
+      transition: opacity 1.2s ease, visibility 1.2s;
+    }
+
+    .door-container.opened {
+      pointer-events: none;
+    }
+
+    .door {
+      width: 50vw;
+      height: 100vh;
+      background: linear-gradient(135deg, #7a0c1b 0%, #4a0610 100%);
+      position: relative;
+      transition: transform 1.8s cubic-bezier(0.77, 0, 0.175, 1);
+      box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.8);
+      border: 4px solid #d4af37;
+    }
+
+    .door-left {
+      border-right: 2px solid #f9d877;
+      transform-origin: left center;
+    }
+
+    .door-right {
+      border-left: 2px solid #f9d877;
+      transform-origin: right center;
+    }
+
+    .door-container.opened .door-left {
+      transform: translateX(-100%);
+    }
+
+    .door-container.opened .door-right {
+      transform: translateX(100%);
+    }
+
+    .door-pattern {
+      position: absolute;
+      top: 50%;
+      width: 260px;
+      height: 260px;
+      border: 3px solid #d4af37;
+      transform: translateY(-50%);
+    }
+
+    .door-left .door-pattern {
+      right: 0;
+      border-right: none;
+      border-radius: 260px 0 0 260px;
+    }
+
+    .door-right .door-pattern {
+      left: 0;
+      border-left: none;
+      border-radius: 0 260px 260px 0;
+    }
+
+    .door-lock-wrapper {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .door-container.opened .door-lock-wrapper {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.5);
+      pointer-events: none;
+    }
+
+    .door-circle {
+      width: 290px;
+      height: 290px;
+      border-radius: 50%;
+      border: 4px solid #ffd700;
+      box-shadow: 0 0 35px rgba(255, 215, 0, 0.4);
+      background: rgba(88, 10, 20, 0.95);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .door-inner-pattern {
+      width: 250px;
+      height: 250px;
+      border: 2px dashed #e6c660;
+      border-radius: 50%;
+    }
+
+    .mooncake-knob {
+      position: absolute;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      animation: pulseGlow 2.2s infinite ease-in-out;
+    }
+
+    .mooncake {
+      width: 85px;
+      height: 85px;
+      background: radial-gradient(circle, #ffe066 0%, #d4a373 60%, #bc6c25 100%);
+      border-radius: 50%;
+      box-shadow: 0 0 25px #ffd700, inset 0 0 15px #f4a261;
+      position: relative;
+      border: 4px solid #e9c46a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .mooncake-pattern {
+      position: absolute;
+      width: 68px;
+      height: 68px;
+      border: 2px dashed #99582a;
+      border-radius: 50%;
+    }
+
+    .mooncake-center {
+      font-size: 42px;
+      line-height: 1;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+    }
+
+    .knob-text {
+      margin-top: 20px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff2a8;
+      letter-spacing: 2px;
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+      white-space: nowrap;
+      background: rgba(0, 0, 0, 0.65);
+      padding: 6px 16px;
+      border-radius: 20px;
+      border: 1px solid #ffd700;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { transform: scale(1); filter: drop-shadow(0 0 10px #ffd700); }
+      50% { transform: scale(1.08); filter: drop-shadow(0 0 25px #ffb703); }
+    }
+
+    /* 2. MAIN BACKGROUND SCENE */
+    .main-stage {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      background-image: url("c7ecbf38-6dd2-4132-bd84-1f1e4de6dbd4.png");
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      overflow: hidden;
+    }
+
+    .stage-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at center, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.35) 100%);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    /* 3. FLOATING LANTERNS */
+    .lanterns-container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .sky-lantern-wrapper {
+      position: absolute;
+      width: 70px;
+      height: 100px;
+      cursor: pointer;
+      pointer-events: auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      animation: floatUp 14s infinite linear;
+    }
+
+    .sky-lantern {
+      position: relative;
+      width: 48px;
+      height: 64px;
+      background: linear-gradient(to bottom, #ff4d6d, #d90429);
+      border-radius: 8px 8px 12px 12px;
+      box-shadow: 0 0 25px rgba(255, 77, 109, 0.9), inset 0 0 15px #ffee55;
+      border: 1px solid #ffb703;
+      transition: transform 0.25s ease-out;
+      pointer-events: none;
+    }
+
+    .sky-lantern-wrapper:hover .sky-lantern {
+      transform: scale(1.25);
+      filter: brightness(1.35);
+    }
+
+    .sky-lantern-tag {
+      position: absolute;
+      bottom: -22px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 14px;
+      height: 22px;
+      background: #d90429;
+      border: 1px solid #ffb703;
+      border-radius: 2px;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(105vh) rotate(-3deg); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-15vh) rotate(5deg); opacity: 0; }
+    }
+
+    .firefly {
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      background-color: #fffaaa;
+      border-radius: 50%;
+      box-shadow: 0 0 12px #ffff00, 0 0 20px #ffea75;
+      pointer-events: none;
+      animation: floatFirefly 8s infinite linear;
+    }
+
+    @keyframes floatFirefly {
+      0% { transform: translateY(0) translateX(0); opacity: 0.2; }
+      50% { transform: translateY(-120px) translateX(40px); opacity: 1; }
+      100% { transform: translateY(-240px) translateX(-30px); opacity: 0.2; }
+    }
+
+    .instruction-banner {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(15, 7, 25, 0.82);
+      border: 1px solid #ffd700;
+      padding: 10px 24px;
+      border-radius: 30px;
+      font-size: 14px;
+      color: #fff2a8;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+      z-index: 20;
+      backdrop-filter: blur(8px);
+      pointer-events: none;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translate(-50%, 0); }
+      50% { transform: translate(-50%, -8px); }
+    }
+
+    /* 4. MODAL POPUP FOR LETTERS & PHOTOS */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.78);
+      backdrop-filter: blur(8px);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.4s ease, visibility 0.4s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-card {
+      width: 90%;
+      max-width: 420px;
+      background: linear-gradient(135deg, #4a0814 0%, #29030a 100%);
+      border: 2px solid #ffd700;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 0 45px rgba(255, 215, 0, 0.5);
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 12px;
+      right: 15px;
+      background: #ffd700;
+      color: #4a0814;
+      border: none;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .modal-header {
+      text-align: center;
+      margin-bottom: 20px;
+      border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+      padding-bottom: 10px;
+    }
+
+    .header-title {
+      color: #ffd700;
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    .modal-body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .modal-img {
+      width: 100%;
+      max-height: 320px;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 3px solid #ffd700;
+    }
+
+    .modal-letter {
+      font-family: 'Caveat', cursive;
+      font-size: 25px;
+      line-height: 1.6;
+      color: #fff8d6;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px dashed rgba(255, 215, 0, 0.5);
+      width: 100%;
+    }
+
+    /* 5. RESPONSIVE MEDIA QUERIES FOR MOBILE */
+    @media (max-width: 600px) {
+      .door-circle {
+        width: 220px;
+        height: 220px;
+      }
+      .door-inner-pattern {
+        width: 180px;
+        height: 180px;
+      }
+      .mooncake {
+        width: 65px;
+        height: 65px;
+      }
+      .mooncake-pattern {
+        width: 50px;
+        height: 50px;
+      }
+      .mooncake-center {
+        font-size: 32px;
+      }
+      .knob-text {
+        font-size: 11px;
+        padding: 4px 12px;
+      }
+
+      .door-pattern {
+        width: 180px;
+        height: 180px;
+      }
+      .door-left .door-pattern {
+        border-radius: 180px 0 0 180px;
+      }
+      .door-right .door-pattern {
+        border-radius: 0 180px 180px 0;
+      }
+
+      .modal-letter {
+        font-size: 18px;
+        padding: 15px;
+      }
+
+      .instruction-banner {
+        font-size: 12px;
+        padding: 8px 16px;
+        width: 85%;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Audio -->
+  <audio id="bgm" loop preload="auto">
+    <source src="Em dễ thương quá mà - MinChee - Official Lyric Video (VICA MEDIA).mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- 1. TRADITIONAL DOOR ENTRANCE -->
+  <div class="door-container" id="doorContainer">
+    <div class="door door-left">
+      <div class="door-pattern"></div>
+    </div>
+    <div class="door door-right">
+      <div class="door-pattern"></div>
+    </div>
+    <div class="door-lock-wrapper">
+      <div class="door-circle">
+        <div class="door-inner-pattern"></div>
+        <div class="mooncake-knob" id="openBtn">
+          <div class="mooncake">
+            <div class="mooncake-pattern"></div>
+            <div class="mooncake-center">🥮</div>
+          </div>
+          <div class="knob-text">CHẠM NHẸ ĐỂ MỞ CỬA</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. MAIN SCENE WITH BACKGROUND IMAGE -->
+  <main class="main-stage">
+    <div class="stage-overlay"></div>
+    
+    <div id="firefliesContainer"></div>
+    <div class="lanterns-container" id="lanternsContainer"></div>
+
+    <div class="instruction-banner">
+      ✨ Chọn vào lồng đèn bay để xem lời chúc ✨
+    </div>
+  </main>
+
+  <!-- 3. MODAL POPUP FOR LETTERS & PHOTOS -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-card">
+      <button class="modal-close" id="modalClose">&times;</button>
+      <div class="modal-header">
+        <span class="header-title">🏮 ĐÊM TRUNG THU 🏮</span>
+      </div>
+      <div class="modal-body" id="modalBody">
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const lanternMessages = [
+      {
+        type: 'photo',
+        url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80'
+      },
+      {
+        type: 'letter',
+        text: 'Chúc em một đêm Trung Thu thật ấm áp, bình yên và tràn ngập niềm vui! 🌙✨'
+      },
+      {
+        type: 'letter',
+        text: 'Cảm ơn em vì đã cùng anh tạo nên những khoảnh khắc thật đẹp dưới ánh trăng rằm. 🏮💖'
+      },
+      {
+        type: 'photo',
+        url: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80'
+      },
+      {
+        type: 'letter',
+        text: 'Dù đi qua bao nhiêu mùa trăng, nguyện ước mỗi đêm Trung Thu đều có em ở bên. 😊'
+      }
+    ];
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const doorContainer = document.getElementById('doorContainer');
+      const openBtn = document.getElementById('openBtn');
+      const bgm = document.getElementById('bgm');
+      const lanternsContainer = document.getElementById('lanternsContainer');
+      const firefliesContainer = document.getElementById('firefliesContainer');
+      const modalOverlay = document.getElementById('modalOverlay');
+      const modalBody = document.getElementById('modalBody');
+      const modalClose = document.getElementById('modalClose');
+
+      openBtn.addEventListener('click', () => {
+        doorContainer.classList.add('opened');
+        bgm.play().catch(err => console.log("Audio play error:", err));
+        setTimeout(() => {
+          doorContainer.style.display = 'none';
+        }, 1800);
+      });
+
+      function createLantern(index) {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'sky-lantern-wrapper';
+
+        const lantern = document.createElement('div');
+        lantern.className = 'sky-lantern';
+
+        const leftPos = Math.random() * 85 + 5;
+        const animDuration = Math.random() * 6 + 12;
+        const animDelay = Math.random() * 8;
+
+        wrapper.style.left = `${leftPos}%`;
+        wrapper.style.animationDuration = `${animDuration}s`;
+        wrapper.style.animationDelay = `${animDelay}s`;
+
+        const tag = document.createElement('div');
+        tag.className = 'sky-lantern-tag';
+        lantern.appendChild(tag);
+        wrapper.appendChild(lantern);
+
+        const triggerClick = (e) => {
+          e.stopPropagation();
+          const data = lanternMessages[index % lanternMessages.length];
+          showModal(data);
+        };
+
+        wrapper.addEventListener('click', triggerClick);
+        wrapper.addEventListener('touchstart', triggerClick, { passive: true });
+
+        lanternsContainer.appendChild(wrapper);
+      }
+
+      for (let i = 0; i < 9; i++) {
+        createLantern(i);
+      }
+
+      for (let i = 0; i < 25; i++) {
+        const firefly = document.createElement('div');
+        firefly.className = 'firefly';
+        firefly.style.left = `${Math.random() * 100}%`;
+        firefly.style.top = `${Math.random() * 75}%`;
+        firefly.style.animationDuration = `${Math.random() * 5 + 5}s`;
+        firefly.style.animationDelay = `${Math.random() * 5}s`;
+        firefliesContainer.appendChild(firefly);
+      }
+
+      function showModal(data) {
+        modalBody.innerHTML = '';
+        if (data.type === 'photo') {
+          const img = document.createElement('img');
+          img.src = data.url;
+          img.className = 'modal-img';
+          modalBody.appendChild(img);
+        } else if (data.type === 'letter') {
+          const letter = document.createElement('div');
+          letter.className = 'modal-letter';
+          letter.innerText = data.text;
+          modalBody.appendChild(letter);
+        }
+        modalOverlay.classList.add('active');
+      }
+
+      modalClose.addEventListener('click', () => {
+        modalOverlay.classList.remove('active');
+      });
+
+      modalOverlay.addEventListener('click', (e) => {
+        if (e.target === modalOverlay) {
+          modalOverlay.classList.remove('active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
